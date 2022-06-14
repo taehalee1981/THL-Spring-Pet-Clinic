@@ -4,7 +4,7 @@
 
     <groupId>guru.springframework</groupId>
     <artifactId>THL-spring-pet-clinic</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
 
     <modules>
         <module>pet-clinic-data</module>
@@ -55,7 +55,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/taehalee1981/THL-Spring-Pet-Clinic.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>THL-spring-pet-clinic-0.0.2</tag>
     </scm>
 
 </project>
