@@ -15,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Controller
@@ -47,6 +49,17 @@ public class PetController {
     public void initOwnerBinder(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
     }
+
+    @InitBinder
+    public void dataBinder (WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText (String text) throws IllegalArgumentException{
+                setValue(LocalDate.parse(text));
+            }
+        });
+    }
+
 
     @GetMapping("/pets/new")
     public String initCreationForm(Owner owner, Model model) {
@@ -81,11 +94,16 @@ public class PetController {
 
     @PostMapping("/pets/{petId}/edit")
     public String processUpdateForm(@Validated Pet pet, BindingResult result, Owner owner, Model model) {
+        System.out.println("Updating Pet infor");
+
         if (result.hasErrors()) {
             model.addAttribute("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
         else {
+            System.out.println("Adding Pet");
+            //todo aqui está dando erro porque eu estou adicionando o
+            // pet novamente na hora de fazer update da inform do pet. Tenho que dar um jeito
             owner.getPets().add(pet);
             ownerService.save(owner);
             return "redirect:/owners/" + owner.getId();
